@@ -1,0 +1,38 @@
+---
+title: "Enunciado de los problemas"
+author: "Enrique Zubiría González"
+output: pdf_document
+
+header-includes:
+   - \usepackage[spanish,es-tabla]{babel}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(dplyr)
+
+knitr::opts_chunk$set(echo = TRUE)
+
+source("datos.R", local = knitr::knit_global())
+```
+
+## Problema 1
+
+Resolver, con cada uno de los métodos estudiados, el problema definido por la siguiente tabla de decisión:
+
+```{r echo=FALSE}
+tabla1 %>%
+  `row.names<-`(c("$a_1$", "$a_2$", "$a_3$", "$a_4$", "$a_5$")) %>%
+  kable(col.names = c("$\\omega_1$", "$\\omega_2$", "$\\omega_3$", "$\\omega_4$"))
+```
+
+## Problema 2
+
+Una empresa está estudiando la adquisición de nueva maquinaria para hacer frente al incremento de la demanda previsto para los próximos meses.
+
+Las posibles alternativas de compra y los beneficios estimados para cada alternativa (en miles de euros) dependiendo del incremento de demanda de los próximos meses se recogen en la siguiente tabla:
+
+```{r echo=FALSE}
+tabla2 %>%
+  kable(caption = "Beneficios según incremento de demanda")
+```
