@@ -72,47 +72,23 @@ solucion1Hurwicz$IntervalosAlfa %>%
         align=c('l', 'r'))
 ```
 
-\pagebreak
+\newpage
 
 ## Problema 2
 
-```{r echo=FALSE}
-tabla2 %>%
-  kable(caption = "Beneficios según incremento de demanda")
+Puede verse en la tabla resumen que todos los criterios, salvo el pesimista (Wald), coinciden en la alternativa más favorable, por lo que la decisión final que elegiríamos sería la **máquina 3**.
 
-solucion2Wald <- criterio.Wald(tabla2, favorable=TRUE)
-solucion2Optimista <- criterio.Optimista(tabla2, favorable=TRUE)
-alfa <- .6
-#solucion2Hurwicz <- criterio.Hurwicz(tabla2, alfa=alfa, favorable=TRUE)
-solucion2Savage <- criterio.Savage(tabla2, favorable=TRUE)
-solucion2Laplace <- criterio.Laplace(tabla2, favorable=TRUE)
-solucion2PuntoIdeal <- criterio.PuntoIdeal(tabla2, favorable=TRUE)
+```{r echo=FALSE, message=FALSE}
+library(kableExtra)
 
-textoSolucion <- function(alternativas) {
-  numAlternativas <- length(alternativas)
-  ifelse(numAlternativas > 1,
-         paste(numAlternativas," alternativas óptimas (*", paste0(rownames(tabla2)[alternativas], collapse = ", "), "*)", sep=""),
-         paste("la *", rownames(tabla2)[alternativas], "* la alternativa óptima", sep=""))
-}
-```
+# alfa <- 0.6
+# 
+# tabla2 %>%
+#   kable(caption = "Beneficios según incremento de demanda")
 
--   **Criterio de Wald (o pesimista**): al tratarse de beneficios se aplica *maximin*, resultando `r textoSolucion(solucion2Wald$AlternativaOptima)`, con un beneficio de `r solucion2Wald$ValorOptimo` (miles de euros).
--   **Criterio optimista**: al tratarse de beneficios se aplica *maximax*, resultando `r textoSolucion(solucion2Optimista$AlternativaOptima)`, con un beneficio de `r solucion2Optimista$ValorOptimo` (miles de euros).
--   **Criterio de Savage**: resulta `r textoSolucion(solucion2Savage$AlternativaOptima)`, con un beneficio de `r solucion2Savage$ValorOptimo` (miles de euros).
--   **Criterio de Laplace**: resulta `r textoSolucion(solucion2Laplace$AlternativaOptima)`, con un beneficio de `r round(solucion2Laplace$ValorOptimo, 2)` (miles de euros).
--   **Criterio de punto ideal**: resulta `r textoSolucion(solucion2PuntoIdeal$AlternativaOptima)`, con un beneficio de `r solucion2PuntoIdeal$ValorOptimo` (miles de euros).
--   **Criterio de Hurwicz**^[Al igual que en el problema anterior, hemos dejado este criterio para el final por motivos de presentación]: la alternativa óptima depende del valor de $\alpha$, como puede verse en esta gráfica:
-
-```{r echo=FALSE, out.width="75%", fig.align='center'}
-solucion2Hurwicz <- dibuja.criterio.Hurwicz_Intervalos(tabla2, favorable=TRUE, mostrarGrafico = TRUE)
-```
-
-En la siguiente tabla se muestran las alternativas óptimas para los distintos intervalos de $\alpha$:
-
-```{r echo=FALSE}
-solucion2Hurwicz$IntervalosAlfa %>%
+criterio.Todos(tabla2, alfa=alfa, favorable=TRUE) %>%
   as.data.frame() %>%
   #mutate(Alternativa = alternativas1_latex[strtoi(Alternativa)]) %>%
-  kable(caption = "alternativa óptima según $\\alpha$",
-        align=c('l', 'r'))
+  kable(caption = paste0("alternativa óptima según $\\alpha$=", alfa)) %>%
+  kable_styling(font_size = 8)
 ```
