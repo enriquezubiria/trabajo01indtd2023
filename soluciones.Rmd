@@ -1,0 +1,118 @@
+---
+title: "Solución de los problemas"
+author: "Enrique Zubiría González"
+output: pdf_document
+
+header-includes:
+   - \usepackage[spanish,es-tabla]{babel}
+---
+
+```{r setupSol, include=FALSE}
+library(knitr)
+library(dplyr)
+
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 1, digits = 2)
+
+source("datos.R", local = knitr::knit_global())
+source("teoriadecision_funciones_incertidumbre.R", local = knitr::knit_global())
+
+textoSolucion <- function(alternativas) {
+  numAlternativas <- length(alternativas)
+  ifelse(numAlternativas > 1,
+         paste(numAlternativas," alternativas óptimas (", paste0(alternativas1_latex[alternativas], collapse = ", "), ")", sep=""),
+         paste(alternativas1_latex[alternativas], " la alternativa óptima", sep=""))
+}
+```
+
+# Enunciados
+
+```{r, child=c('enunciados.Rmd')}
+```
+
+\newpage
+
+# Soluciones
+
+## Problema 1
+
+```{r echo=FALSE}
+tabla1 %>%
+  `row.names<-`(c("$a_1$", "$a_2$", "$a_3$", "$a_4$", "$a_5$")) %>%
+  kable(col.names = c("$\\omega_1$", "$\\omega_2$", "$\\omega_3$", "$\\omega_4$"))
+
+solucion1Wald <- criterio.Wald(tabla1, favorable=FALSE)
+solucion1Optimista <- criterio.Optimista(tabla1, favorable=FALSE)
+alfa <- .6
+#solucion1Hurwicz <- criterio.Hurwicz(tabla1, alfa=alfa, favorable=FALSE)
+solucion1Savage <- criterio.Savage(tabla1, favorable=FALSE)
+solucion1Laplace <- criterio.Laplace(tabla1, favorable=FALSE)
+solucion1PuntoIdeal <- criterio.PuntoIdeal(tabla1, favorable=FALSE)
+```
+
+-   **Criterio de Wald (o pesimista**): al tratarse de costes se aplica *minimax*, resultando `r textoSolucion(solucion1Wald$AlternativaOptima)`, con un coste de `r solucion1Wald$ValorOptimo`.
+-   **Criterio optimista**: al tratarse de costes se aplica *minimin*, resultando `r textoSolucion(solucion1Optimista$AlternativaOptima)`, con un coste de `r solucion1Optimista$ValorOptimo`.
+-   **Criterio de Savage**: resulta `r textoSolucion(solucion1Savage$AlternativaOptima)`, con un coste de `r solucion1Savage$ValorOptimo`.
+-   **Criterio de Laplace**: resulta `r textoSolucion(solucion1Laplace$AlternativaOptima)`, con un coste de `r solucion1Laplace$ValorOptimo`.
+-   **Criterio de punto ideal**: resulta `r textoSolucion(solucion1PuntoIdeal$AlternativaOptima)`, con un coste de `r solucion1PuntoIdeal$ValorOptimo`.
+-   **Criterio de Hurwicz**^[Hemos dejado este criterio para el final por motivos de presentación, ya que su desarrollo es algo más largo y tiene un gráfico]: la alternativa óptima depende del valor de $\alpha$, como puede verse en esta gráfica:
+
+```{r echo=FALSE, out.width="75%", fig.align='center'}
+solucion1Hurwicz <- dibuja.criterio.Hurwicz_Intervalos(tabla1, favorable=FALSE, mostrarGrafico = TRUE)
+```
+
+En la siguiente tabla se muestran las alternativas óptimas para los distintos intervalos de $\alpha$:
+
+```{r echo=FALSE}
+solucion1Hurwicz$IntervalosAlfa %>%
+  as.data.frame() %>%
+  mutate(Alternativa = alternativas1_latex[strtoi(Alternativa)]) %>%
+  #select(c('Intervalo', 'textoAlternativa')) %>%
+  kable(caption = "alternativa óptima según $\\alpha$",
+        align=c('l', 'r'))
+```
+
+\pagebreak
+
+## Problema 2
+
+```{r echo=FALSE}
+tabla2 %>%
+  kable(caption = "Beneficios según incremento de demanda")
+
+solucion2Wald <- criterio.Wald(tabla2, favorable=TRUE)
+solucion2Optimista <- criterio.Optimista(tabla2, favorable=TRUE)
+alfa <- .6
+#solucion2Hurwicz <- criterio.Hurwicz(tabla2, alfa=alfa, favorable=TRUE)
+solucion2Savage <- criterio.Savage(tabla2, favorable=TRUE)
+solucion2Laplace <- criterio.Laplace(tabla2, favorable=TRUE)
+solucion2PuntoIdeal <- criterio.PuntoIdeal(tabla2, favorable=TRUE)
+
+textoSolucion <- function(alternativas) {
+  numAlternativas <- length(alternativas)
+  ifelse(numAlternativas > 1,
+         paste(numAlternativas," alternativas óptimas (*", paste0(rownames(tabla2)[alternativas], collapse = ", "), "*)", sep=""),
+         paste("la *", rownames(tabla2)[alternativas], "* la alternativa óptima", sep=""))
+}
+```
+
+-   **Criterio de Wald (o pesimista**): al tratarse de beneficios se aplica *maximin*, resultando `r textoSolucion(solucion2Wald$AlternativaOptima)`, con un beneficio de `r solucion2Wald$ValorOptimo` (miles de euros).
+-   **Criterio optimista**: al tratarse de beneficios se aplica *maximax*, resultando `r textoSolucion(solucion2Optimista$AlternativaOptima)`, con un beneficio de `r solucion2Optimista$ValorOptimo` (miles de euros).
+-   **Criterio de Savage**: resulta `r textoSolucion(solucion2Savage$AlternativaOptima)`, con un beneficio de `r solucion2Savage$ValorOptimo` (miles de euros).
+-   **Criterio de Laplace**: resulta `r textoSolucion(solucion2Laplace$AlternativaOptima)`, con un beneficio de `r round(solucion2Laplace$ValorOptimo, 2)` (miles de euros).
+-   **Criterio de punto ideal**: resulta `r textoSolucion(solucion2PuntoIdeal$AlternativaOptima)`, con un beneficio de `r solucion2PuntoIdeal$ValorOptimo` (miles de euros).
+-   **Criterio de Hurwicz**^[Al igual que en el problema anterior, hemos dejado este criterio para el final por motivos de presentación]: la alternativa óptima depende del valor de $\alpha$, como puede verse en esta gráfica:
+
+```{r echo=FALSE, out.width="75%", fig.align='center'}
+solucion2Hurwicz <- dibuja.criterio.Hurwicz_Intervalos(tabla2, favorable=TRUE, mostrarGrafico = TRUE)
+```
+
+En la siguiente tabla se muestran las alternativas óptimas para los distintos intervalos de $\alpha$:
+
+```{r echo=FALSE}
+solucion2Hurwicz$IntervalosAlfa %>%
+  as.data.frame() %>%
+  #mutate(Alternativa = alternativas1_latex[strtoi(Alternativa)]) %>%
+  kable(caption = "alternativa óptima según $\\alpha$",
+        align=c('l', 'r'))
+```

@@ -18,7 +18,7 @@ source("datos.R", local = knitr::knit_global())
 
 ## Problema 1
 
-Resolver, con cada uno de los métodos estudiados, el problema definido por la siguiente tabla de decisión:
+Resolver, con cada uno de los métodos estudiados, el problema definido por la siguiente tabla de decisión, donde los valores son costes:
 
 ```{r echo=FALSE}
 tabla1 %>%
@@ -30,7 +30,7 @@ tabla1 %>%
 
 Una empresa está estudiando la adquisición de nueva maquinaria para hacer frente al incremento de la demanda previsto para los próximos meses.
 
-Las posibles alternativas de compra y los beneficios estimados para cada alternativa (en miles de euros) dependiendo del incremento de demanda de los próximos meses se recogen en la siguiente tabla:
+Las posibles alternativas de compra y los beneficios estimados para cada alternativa (en miles de euros) dependiendo del incremento de demanda de los próximos meses (alto, medio o bajo) se recogen en la siguiente tabla:
 
 ```{r echo=FALSE}
 tabla2 %>%
