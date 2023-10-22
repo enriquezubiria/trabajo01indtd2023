@@ -1,6 +1,10 @@
 ---
-title: "Enunciado de los problemas"
+title: |
+  | Teoría de la decisión
+  | Trabajo 1
+  | Enunciado de los problemas
 author: "Enrique Zubiría González"
+date: "octubre 2023"
 output: pdf_document
 
 header-includes:
@@ -16,9 +20,11 @@ knitr::opts_chunk$set(echo = TRUE)
 source("datos.R", local = knitr::knit_global())
 ```
 
+\newpage
+
 ## Problema 1
 
-Resolver, con cada uno de los métodos estudiados, el problema definido por la siguiente tabla de decisión, donde los valores son costes:
+Resolver, con cada uno de los métodos estudiados, y tanto en el caso favorable (beneficios) como en el desfavorable (costes), el problema definido por la siguiente tabla de decisión:
 
 ```{r echo=FALSE}
 tabla1 %>%
@@ -36,3 +42,5 @@ Las posibles alternativas de compra y los beneficios estimados para cada alterna
 tabla2 %>%
   kable(caption = "Beneficios según incremento de demanda")
 ```
+
+Proponer qué máquina debe comprarse en esta situación.
